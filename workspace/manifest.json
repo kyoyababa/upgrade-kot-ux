@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "upgrade-kot-ux",
+  "description": "Upgrade KOT UX.",
+  "version": "1.0.0",
+  "icons": {
+    "16": "assets/images/headshot.jpg"
+  },
+  "background": {
+    "scripts": [
+      "assets/scripts/upgradeKotUx__background.js"
+    ],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "assets/images/headshot.jpg"
+    },
+    "default_title": "upgrade-kot-ux"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["assets/scripts/upgradeKotUx__content.js"]
+    }
+  ],
+  "permissions": ["activeTab"]
+}
