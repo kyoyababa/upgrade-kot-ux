@@ -3,20 +3,33 @@
 import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
 
+const kantanDakokuShinseiButton = `
+  <div id="kantan-dakoku-shinsei">
+    かんたん打刻申請
+    <style>
+      #kantan-dakoku-shinsei {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: red;
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1;
+        padding: 20px;
+        border-radius: 4px;
+        box-shadow: 0 3px 6px #666;
+        cursor: pointer;
+        z-index: 9999;
+      }
+    </style>
+  </div>
+`;
+
 class UpgradeKotUx {
   constructor() {
-    if (this.checkIfKotPageIsCorrect('top')) {
-      return this.activateKantanButton();
-    }
-
-    if (!this.checkIfKotPageIsCorrect('dakokuShinsei')) {
-      return;
-    }
-
-    if (this.isAlreadyArrived()) {
-      this.doTaikinDakoku();
-    } else {
-      this.doShukkinDakoku();
+    if (this.checkIfKotPageIsTop() || this.checkIfKotPageIsDakokuShinsei()) {
+      this.activateKantanButton();
     }
   }
 
@@ -24,32 +37,25 @@ class UpgradeKotUx {
     const $todayRow = this.findTodayRow();
     if ($todayRow.length === 0) return;
 
-    $('body').append(`
-      <div id="kantan-dakoku-shinsei">
-        かんたん打刻申請
-        <style>
-          #kantan-dakoku-shinsei {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: red;
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-            line-height: 1;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 3px 6px #666;
-            cursor: pointer;
-            z-index: 9999;
-          }
-        </style>
-      </div>
-    `);
+    $('body').append(kantanDakokuShinseiButton);
 
-    $('#kantan-dakoku-shinsei').click(() => {
-      this.moveToDakokuShinseiPage($todayRow);
-    });
+    if (this.checkIfKotPageIsTop()) {
+      $('#kantan-dakoku-shinsei').click(() => {
+        this.moveToDakokuShinseiPage($todayRow);
+      });
+    }
+
+    if (this.checkIfKotPageIsDakokuShinsei() && this.isAlreadyArrived()) {
+      $('#kantan-dakoku-shinsei').click(() => {
+        this.doTaikinDakoku();
+      });
+    }
+
+    if (this.checkIfKotPageIsDakokuShinsei()) {
+      $('#kantan-dakoku-shinsei').click(() => {
+        this.doShukkinDakoku();
+      });
+    }
   }
 
   doShukkinDakoku() {
@@ -83,14 +89,14 @@ class UpgradeKotUx {
     $(todayTriggerId).click();
   }
 
-  checkIfKotPageIsCorrect(pagePattern) {
-    if (pagePattern === 'top') {
-      const $targetTableWrapper = $('.htBlock-adjastableTableF_inner');
-      return $targetTableWrapper.length === 1;
-    } else if (pagePattern === 'dakokuShinsei') {
-      const $targetTableWrapper = $('#recording_timestamp_table');
-      return $targetTableWrapper.length === 1;
-    }
+  checkIfKotPageIsTop() {
+    const $targetTableWrapper = $('.htBlock-adjastableTableF_inner');
+    return $targetTableWrapper.length === 1;
+  }
+
+  checkIfKotPageIsDakokuShinsei() {
+    const $targetTableWrapper = $('#recording_timestamp_table');
+    return $targetTableWrapper.length === 1;
   }
 
   findTodayRow() {
@@ -118,6 +124,3 @@ class UpgradeKotUx {
 }
 
 new UpgradeKotUx();
-
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-});
