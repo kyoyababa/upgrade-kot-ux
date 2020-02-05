@@ -11,16 +11,21 @@ const kantanDakokuShinseiButton = `
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background-color: red;
-        color: #fff;
+        background-color: #FF0000;
+        color: #FFFFFF;
         font-size: 24px;
         font-weight: bold;
         line-height: 1;
         padding: 20px;
         border-radius: 4px;
-        box-shadow: 0 3px 6px #666;
+        box-shadow: 0 3px 6px #666666;
         cursor: pointer;
         z-index: 9999;
+        transition: background-color 300ms ease-out;
+      }
+
+      #kantan-dakoku-shinsei:hover {
+        background-color: #FF5C5C;
       }
     </style>
   </div>
