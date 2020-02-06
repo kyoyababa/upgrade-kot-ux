@@ -1,6 +1,12 @@
 import $ from 'jquery';
+import * as Utils from './utils';
 
 type DakokuValue = '1' | '2';
+
+// TODO(baba): イラストレーターから正式な画像が来たら差し替え
+const pagingButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
+const shukkinButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
+const taikinButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
 
 class UpgradeKotUx {
   constructor() {
@@ -13,9 +19,8 @@ class UpgradeKotUx {
     }
   }
 
-  private insertPagingButton($todayRow: JQuery<HTMLElement>): void {
-    // TODO(baba): イラストレーターから正式な画像が来たら差し替え
-    const warotaImage = '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
+  private insertPagingButton($todayRow: JQuery<HTMLTableRowElement>): void {
+    const warotaImage = `<img src="${pagingButtonImageSrc}">`;
     const buttonHtml = `
       <div id="kantan-dakoku-shinsei">
         ${warotaImage}
@@ -58,45 +63,7 @@ class UpgradeKotUx {
   }
 
   private addButtonStyle(): void {
-    $('body').append(`
-      <style>
-        #kantan-dakoku-shinsei, #button_01 {
-          position: fixed;
-          bottom: 30px;
-          right: 30px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          align-items: center;
-          width: 240px;
-          height: 240px;
-          margin: 0;
-          border: 0;
-          background-color: #005A96;
-          color: #FFFFFF;
-          font-size: 30px;
-          font-weight: bold;
-          line-height: 1.25;
-          padding: 20px;
-          border-radius: 100%;
-          box-shadow: 0 3px 6px #666666;
-          text-align: center;
-          cursor: pointer;
-          z-index: 9999;
-          transition: background-color 300ms cubic-bezier(0.19,1,0.22,1);
-        }
-
-        #kantan-dakoku-shinsei > img {
-          display: block;
-          width: 50px;
-          height: 50px;
-        }
-
-        #kantan-dakoku-shinsei:hover, #button_01:hover {
-          background-color: #0A75BD;
-        }
-      </style>
-    `);
+    $('body').append(Utils.getAdditionalStyles());
   }
 
   private insertDakokuData(dakokuValue: DakokuValue): void {
@@ -104,7 +71,7 @@ class UpgradeKotUx {
     $shukkinSelection.val(dakokuValue);
 
     const $shukkinTime = $('#recording_timestamp_time_1');
-    $shukkinTime.val(this.generateCurrentTimeText());
+    $shukkinTime.val(Utils.generateCurrentTimeText());
     // NOTE(baba): フォーカスしないとModelがBindingされないため下記を実行
     $shukkinTime.focus();
     this.convertButtonToWarota(dakokuValue);
@@ -120,9 +87,8 @@ class UpgradeKotUx {
     const $button = $('#button_01');
     const generateWarotaImage = (dakokuValue: DakokuValue) => {
       switch(dakokuValue) {
-        // TODO(baba): イラストレーターから正式な画像が来たら差し替え
-        case '1': return '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
-        case '2': return '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
+        case '1': return `<img src="${shukkinButtonImageSrc}">`;
+        case '2': return `<img src="${taikinButtonImageSrc}">`;
       }
     }
     const warotaImage = generateWarotaImage(dakokuValue);
@@ -138,13 +104,8 @@ class UpgradeKotUx {
         default: return '';
       }
     }
-    const buttonText = `${this.generateCurrentTimeText()}に<br />${generateDakokuPrefix(dakokuValue)}`;
+    const buttonText = `${Utils.generateCurrentTimeText()}に<br />${generateDakokuPrefix(dakokuValue)}`;
     $button.find('span').prepend(buttonText);
-  }
-
-  private generateCurrentTimeText(): string {
-    const currentTime = new Date();
-    return `00${currentTime.getHours()}`.slice(-2) + ':' + `00${currentTime.getMinutes()}`.slice(-2);
   }
 
   private isAlreadyArrived(): boolean {
@@ -152,7 +113,7 @@ class UpgradeKotUx {
     return $dakokuHistoryTable.length === 1;
   }
 
-  private moveToDakokuShinseiPage($todayRow: JQuery<HTMLElement>): void {
+  private moveToDakokuShinseiPage($todayRow: JQuery<HTMLTableRowElement>): void {
     const $option = $todayRow.find('.htBlock-selectOther > option').eq(1);
     const todayTriggerId = $option.val();
     if (typeof todayTriggerId === 'undefined') return;
@@ -169,7 +130,7 @@ class UpgradeKotUx {
     return $targetTableWrapper.length === 1;
   }
 
-  private findTodayRow(): JQuery<HTMLElement> | undefined {
+  private findTodayRow(): JQuery<HTMLTableRowElement> | undefined {
     const $dayRows = $('.htBlock-scrollTable_day');
     const rowInnerTexts = Array.from($dayRows).map($r => {
       return $($r).find('p').text();
@@ -189,7 +150,7 @@ class UpgradeKotUx {
     });
     if (typeof matchedRowIndex === 'undefined' || matchedRowIndex === null) return;
 
-    const $tableRows = $('.htBlock-adjastableTableF_inner > table > tbody > tr');
+    const $tableRows: JQuery<HTMLTableRowElement> = $('.htBlock-adjastableTableF_inner > table > tbody > tr');
     return $tableRows.eq(matchedRowIndex);
   }
 }
