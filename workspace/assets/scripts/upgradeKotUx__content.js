@@ -31,16 +31,20 @@ class UpgradeKotUx {
       $('#kantan-dakoku-shinsei').click(() => {
         this.moveToDakokuShinseiPage($todayRow);
       });
+
+      return;
     }
 
     if (this.checkIfKotPageIsDakokuShinsei() && this.isAlreadyArrived()) {
       this.addButtonStyle();
       this.insertTaikinDakokuData();
+      return;
     }
 
     if (this.checkIfKotPageIsDakokuShinsei()) {
       this.addButtonStyle();
       this.insertShukkinDakokuData();
+      return;
     }
   }
 
