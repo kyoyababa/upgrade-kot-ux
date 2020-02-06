@@ -4,6 +4,7 @@ import * as Utils from './utils';
 type DakokuValue = '1' | '2';
 
 // TODO(baba): イラストレーターから正式な画像が来たら差し替え
+// const hoge = chrome.extension.getURL('gazou.png');
 const pagingButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
 const shukkinButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
 const taikinButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';

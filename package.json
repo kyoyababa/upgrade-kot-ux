@@ -12,7 +12,13 @@
   },
   "author": "kyoyababa",
   "license": "MIT",
+  "standard": {
+    "globals": [
+      "chrome"
+    ]
+  },
   "devDependencies": {
+    "@types/chrome": "0.0.93",
     "@types/jquery": "^3.3.32",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.6.1",
