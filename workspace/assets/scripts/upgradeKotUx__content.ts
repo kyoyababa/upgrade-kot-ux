@@ -11,15 +11,19 @@ class UpgradeKotUx {
     }
   }
 
-  private generateButton(buttonText: string): string {
+  private insertPagingButton($todayRow: JQuery<HTMLElement>): void {
     // TODO(baba): イラストレーターから正式な画像が来たら差し替え
     const warotaImage = '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
-    return `
+    const buttonHtml = `
       <div id="kantan-dakoku-shinsei">
         ${warotaImage}
-        <span>${buttonText}</span>
+        <span>今日の<br />申請画面へ</span>
       </div>
     `;
+    $('body').append(buttonHtml);
+    $('#kantan-dakoku-shinsei').click(() => {
+      this.moveToDakokuShinseiPage($todayRow);
+    });
   }
 
   private activateKantanButton(): void {
@@ -28,10 +32,7 @@ class UpgradeKotUx {
       if (typeof $todayRow === 'undefined' || $todayRow.length === 0) return;
 
       this.addButtonStyle();
-      $('body').append(this.generateButton('今日の<br />申請画面へ'));
-      $('#kantan-dakoku-shinsei').click(() => {
-        this.moveToDakokuShinseiPage($todayRow);
-      });
+      this.insertPagingButton($todayRow);
       return;
     }
 
