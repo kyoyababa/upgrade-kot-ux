@@ -3,34 +3,6 @@
 import jQuery from 'jquery';
 window.$ = window.jQuery = jQuery;
 
-const kantanDakokuShinseiButton = `
-  <div id="kantan-dakoku-shinsei">
-    かんたん打刻申請
-    <style>
-      #kantan-dakoku-shinsei {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #FF0000;
-        color: #FFFFFF;
-        font-size: 24px;
-        font-weight: bold;
-        line-height: 1;
-        padding: 20px;
-        border-radius: 4px;
-        box-shadow: 0 3px 6px #666666;
-        cursor: pointer;
-        z-index: 9999;
-        transition: background-color 300ms ease-out;
-      }
-
-      #kantan-dakoku-shinsei:hover {
-        background-color: #FF5C5C;
-      }
-    </style>
-  </div>
-`;
-
 class UpgradeKotUx {
   constructor() {
     if (this.checkIfKotPageIsTop() || this.checkIfKotPageIsDakokuShinsei()) {
@@ -38,40 +10,90 @@ class UpgradeKotUx {
     }
   }
 
+  generateButton(buttonText) {
+    const warotaImage = '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
+    return `
+      <div id="kantan-dakoku-shinsei">
+        ${warotaImage}
+        ${buttonText}
+        ${warotaImage}
+      </div>
+    `;
+  }
+
   activateKantanButton() {
-    const $todayRow = this.findTodayRow();
-    if ($todayRow.length === 0) return;
-
-    $('body').append(kantanDakokuShinseiButton);
-
     if (this.checkIfKotPageIsTop()) {
+      const $todayRow = this.findTodayRow();
+      if ($todayRow.length === 0) return;
+
+      this.addButtonStyle();
+      $('body').append(this.generateButton('今日の<br />打刻申請画面へ'));
       $('#kantan-dakoku-shinsei').click(() => {
         this.moveToDakokuShinseiPage($todayRow);
       });
     }
 
     if (this.checkIfKotPageIsDakokuShinsei() && this.isAlreadyArrived()) {
-      $('#kantan-dakoku-shinsei').click(() => {
-        this.doTaikinDakoku();
-      });
+      this.addButtonStyle();
+      this.insertTaikinDakokuData();
     }
 
     if (this.checkIfKotPageIsDakokuShinsei()) {
-      $('#kantan-dakoku-shinsei').click(() => {
-        this.doShukkinDakoku();
-      });
+      this.insertShukkinDakokuData();
     }
   }
 
-  doShukkinDakoku() {
-    this.doDakoku('1');
+  insertShukkinDakokuData() {
+    this.insertDakokuData('1');
   }
 
-  doTaikinDakoku() {
-    this.doDakoku('2');
+  insertTaikinDakokuData() {
+    this.insertDakokuData('2');
   }
 
-  doDakoku(dakokuValue) {
+  addButtonStyle() {
+    $('body').append(`
+      <style>
+        #kantan-dakoku-shinsei, #button_01 {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          width: 200px;
+          height: 200px;
+          margin: 0;
+          border: 0;
+          background-color: #005A96;
+          color: #FFFFFF;
+          font-size: 24px;
+          font-weight: bold;
+          line-height: 1;
+          padding: 20px;
+          border-radius: 100%;
+          box-shadow: 0 3px 6px #666666;
+          text-align: center;
+          cursor: pointer;
+          z-index: 9999;
+          transition: background-color 300ms cubic-bezier(0.19,1,0.22,1);
+        }
+
+        #kantan-dakoku-shinsei > img {
+          display: block;
+          width: 50px;
+          height: 50px;
+        }
+
+        #kantan-dakoku-shinsei:hover, #button_01:hover {
+          background-color: #0A75BD;
+        }
+      </style>
+    `);
+  }
+
+  insertDakokuData(dakokuValue) {
     const $shukkinSelection = $('select[name=recording_type_code_1]');
     $shukkinSelection.val(dakokuValue);
 
@@ -79,9 +101,11 @@ class UpgradeKotUx {
     const currentTime = new Date();
     const currentTimeText = `00${currentTime.getHours()}`.slice(-2) + ':' + `00${currentTime.getMinutes()}`.slice(-2);
     $shukkinTime.val(currentTimeText);
+    // NOTE(baba): フォーカスしないとModelがBindingされないため下記を実行
+    $shukkinTime.focus();
 
     const $cta = $('#button_01');
-    $cta.click();
+    this.addButtonStyle();
   }
 
   isAlreadyArrived() {
