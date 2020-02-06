@@ -39,6 +39,7 @@ class UpgradeKotUx {
     }
 
     if (this.checkIfKotPageIsDakokuShinsei()) {
+      this.addButtonStyle();
       this.insertShukkinDakokuData();
     }
   }
