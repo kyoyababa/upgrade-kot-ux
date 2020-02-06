@@ -1,62 +1,60 @@
-'use strict';
-
-import jQuery from 'jquery';
-window.$ = window.jQuery = jQuery;
+import $ from 'jquery';
 
 class UpgradeKotUx {
   constructor() {
-    if (this.checkIfKotPageIsTop() || this.checkIfKotPageIsDakokuShinsei()) {
+    this.init();
+  }
+
+  private init(): void {
+    if (this.isKotTopPage() || this.isDakokuShinseiPage()) {
       this.activateKantanButton();
     }
   }
 
-  generateButton(buttonText) {
+  private generateButton(buttonText: string): string {
+    // TODO(baba): イラストレーターから正式な画像が来たら差し替え
     const warotaImage = '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
     return `
       <div id="kantan-dakoku-shinsei">
         ${warotaImage}
-        ${buttonText}
-        ${warotaImage}
+        <span>${buttonText}</span>
       </div>
     `;
   }
 
-  activateKantanButton() {
-    if (this.checkIfKotPageIsTop()) {
+  private activateKantanButton(): void {
+    if (this.isKotTopPage()) {
       const $todayRow = this.findTodayRow();
-      if ($todayRow.length === 0) return;
+      if (typeof $todayRow === 'undefined' || $todayRow.length === 0) return;
 
       this.addButtonStyle();
-      $('body').append(this.generateButton('今日の<br />打刻申請画面へ'));
+      $('body').append(this.generateButton('今日の<br />申請画面へ'));
       $('#kantan-dakoku-shinsei').click(() => {
         this.moveToDakokuShinseiPage($todayRow);
       });
-
       return;
     }
 
-    if (this.checkIfKotPageIsDakokuShinsei() && this.isAlreadyArrived()) {
-      this.addButtonStyle();
+    if (this.isDakokuShinseiPage() && this.isAlreadyArrived()) {
       this.insertTaikinDakokuData();
       return;
     }
 
-    if (this.checkIfKotPageIsDakokuShinsei()) {
-      this.addButtonStyle();
+    if (this.isDakokuShinseiPage()) {
       this.insertShukkinDakokuData();
       return;
     }
   }
 
-  insertShukkinDakokuData() {
+  private insertShukkinDakokuData(): void {
     this.insertDakokuData('1');
   }
 
-  insertTaikinDakokuData() {
+  private insertTaikinDakokuData(): void {
     this.insertDakokuData('2');
   }
 
-  addButtonStyle() {
+  private addButtonStyle(): void {
     $('body').append(`
       <style>
         #kantan-dakoku-shinsei, #button_01 {
@@ -67,15 +65,15 @@ class UpgradeKotUx {
           flex-direction: column;
           justify-content: space-around;
           align-items: center;
-          width: 200px;
-          height: 200px;
+          width: 240px;
+          height: 240px;
           margin: 0;
           border: 0;
           background-color: #005A96;
           color: #FFFFFF;
-          font-size: 24px;
+          font-size: 30px;
           font-weight: bold;
-          line-height: 1;
+          line-height: 1.25;
           padding: 20px;
           border-radius: 100%;
           box-shadow: 0 3px 6px #666666;
@@ -98,7 +96,7 @@ class UpgradeKotUx {
     `);
   }
 
-  insertDakokuData(dakokuValue) {
+  private insertDakokuData(dakokuValue: string): void {
     const $shukkinSelection = $('select[name=recording_type_code_1]');
     $shukkinSelection.val(dakokuValue);
 
@@ -108,40 +106,60 @@ class UpgradeKotUx {
     $shukkinTime.val(currentTimeText);
     // NOTE(baba): フォーカスしないとModelがBindingされないため下記を実行
     $shukkinTime.focus();
-
-    const $cta = $('#button_01');
-    this.addButtonStyle();
+    this.convertButtonToWarota(dakokuValue);
   }
 
-  isAlreadyArrived() {
+  private convertButtonToWarota(dakokuValue: string): void {
+    this.addButtonStyle();
+    this.insertWarotaImageToButton(dakokuValue);
+  }
+
+  private insertWarotaImageToButton(dakokuValue: string): void {
+    const $button = $('#button_01');
+    const generateWarotaImage = (dakokuValue: string) => {
+      switch(dakokuValue) {
+        // TODO(baba): イラストレーターから正式な画像が来たら差し替え
+        case '1': return '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
+        case '2': return '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
+        default: return '';
+      }
+    }
+    const warotaImage = generateWarotaImage(dakokuValue);
+    $button.prepend(warotaImage);
+  }
+
+  private isAlreadyArrived(): boolean {
     const $dakokuHistoryTable = $('.specific-table_1000_wrap');
     return $dakokuHistoryTable.length === 1;
   }
 
-  moveToDakokuShinseiPage($todayRow) {
-    const todayTriggerId = $todayRow.find('.htBlock-selectOther > option').eq(1).val();
-    $(todayTriggerId).click();
+  private moveToDakokuShinseiPage($todayRow: JQuery<HTMLElement>): void {
+    const $option = $todayRow.find('.htBlock-selectOther > option').eq(1);
+    const todayTriggerId = $option.val();
+    if (typeof todayTriggerId === 'undefined') return;
+    $(<string>todayTriggerId).click();
   }
 
-  checkIfKotPageIsTop() {
+  private isKotTopPage(): boolean {
     const $targetTableWrapper = $('.htBlock-adjastableTableF_inner');
     return $targetTableWrapper.length === 1;
   }
 
-  checkIfKotPageIsDakokuShinsei() {
+  private isDakokuShinseiPage(): boolean {
     const $targetTableWrapper = $('#recording_timestamp_table');
     return $targetTableWrapper.length === 1;
   }
 
-  findTodayRow() {
+  private findTodayRow(): JQuery<HTMLElement> | undefined {
     const $dayRows = $('.htBlock-scrollTable_day');
     const rowInnerTexts = Array.from($dayRows).map($r => {
       return $($r).find('p').text();
     });
+
     const today = new Date();
     const rowDates = rowInnerTexts.map(t => {
-      const month = t.split('/')[0];
-      const date = t.split('/')[1].slice(0, 2);
+      const month = parseInt(t.split('/')[0], 10);
+      const date = parseInt(t.split('/')[1].slice(0, 2), 10);
       const currentYear = today.getFullYear();
       return new Date(currentYear, month, date);
     })

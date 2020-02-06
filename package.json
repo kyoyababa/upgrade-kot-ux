@@ -6,13 +6,14 @@
   "scripts": {
     "start": "npm run clean && (npm run build:js && (npm run build:image & npm run build:json)) ",
     "clean": "rm -rf dest",
-    "build:js": "parcel watch workspace/assets/scripts/upgradeKotUx__background.js -d dest/assets/scripts/ & parcel build workspace/assets/scripts/upgradeKotUx__content.js -d dest/assets/scripts/",
+    "build:js": "parcel watch workspace/assets/scripts/upgradeKotUx__background.js -d dest/assets/scripts/ & parcel build workspace/assets/scripts/upgradeKotUx__content.ts -d dest/assets/scripts/",
     "build:image": "cp -r workspace/assets/images dest/assets",
     "build:json": "cp workspace/manifest.json dest"
   },
   "author": "kyoyababa",
   "license": "MIT",
   "devDependencies": {
+    "@types/jquery": "^3.3.32",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.6.1",
     "jquery": "^3.2.1",
