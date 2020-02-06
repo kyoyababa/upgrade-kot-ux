@@ -1,5 +1,7 @@
 import $ from 'jquery';
 
+type DakokuValue = '1' | '2';
+
 class UpgradeKotUx {
   constructor() {
     this.init();
@@ -97,36 +99,52 @@ class UpgradeKotUx {
     `);
   }
 
-  private insertDakokuData(dakokuValue: string): void {
+  private insertDakokuData(dakokuValue: DakokuValue): void {
     const $shukkinSelection = $('select[name=recording_type_code_1]');
     $shukkinSelection.val(dakokuValue);
 
     const $shukkinTime = $('#recording_timestamp_time_1');
-    const currentTime = new Date();
-    const currentTimeText = `00${currentTime.getHours()}`.slice(-2) + ':' + `00${currentTime.getMinutes()}`.slice(-2);
-    $shukkinTime.val(currentTimeText);
+    $shukkinTime.val(this.generateCurrentTimeText());
     // NOTE(baba): フォーカスしないとModelがBindingされないため下記を実行
     $shukkinTime.focus();
     this.convertButtonToWarota(dakokuValue);
   }
 
-  private convertButtonToWarota(dakokuValue: string): void {
+  private convertButtonToWarota(dakokuValue: DakokuValue): void {
     this.addButtonStyle();
     this.insertWarotaImageToButton(dakokuValue);
+    this.adjustButtonText(dakokuValue);
   }
 
-  private insertWarotaImageToButton(dakokuValue: string): void {
+  private insertWarotaImageToButton(dakokuValue: DakokuValue): void {
     const $button = $('#button_01');
-    const generateWarotaImage = (dakokuValue: string) => {
+    const generateWarotaImage = (dakokuValue: DakokuValue) => {
       switch(dakokuValue) {
         // TODO(baba): イラストレーターから正式な画像が来たら差し替え
         case '1': return '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
         case '2': return '<img src="https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif">';
-        default: return '';
       }
     }
     const warotaImage = generateWarotaImage(dakokuValue);
     $button.prepend(warotaImage);
+  }
+
+  private adjustButtonText(dakokuValue: DakokuValue): void {
+    const $button = $('#button_01');
+    const generateDakokuPrefix = (dakokuValue: DakokuValue) => {
+      switch(dakokuValue) {
+        case '1': return '出勤';
+        case '2': return '退勤';
+        default: return '';
+      }
+    }
+    const buttonText = `${this.generateCurrentTimeText()}に<br />${generateDakokuPrefix(dakokuValue)}`;
+    $button.find('span').prepend(buttonText);
+  }
+
+  private generateCurrentTimeText(): string {
+    const currentTime = new Date();
+    return `00${currentTime.getHours()}`.slice(-2) + ':' + `00${currentTime.getMinutes()}`.slice(-2);
   }
 
   private isAlreadyArrived(): boolean {
