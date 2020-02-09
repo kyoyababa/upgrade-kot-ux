@@ -3,11 +3,9 @@ import * as Utils from './utils';
 
 type DakokuValue = '1' | '2';
 
-// TODO(baba): イラストレーターから正式な画像が来たら差し替え
-// const hoge = chrome.extension.getURL('gazou.png');
-const pagingButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
-const shukkinButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
-const taikinButtonImageSrc = 'https://emoji.slack-edge.com/T02B138NJ/warota_burburu/9a1c749903d63479.gif';
+const pagingButtonImageSrc = chrome.extension.getURL('assets/kintai-kun.png');
+const shukkinButtonImageSrc = chrome.extension.getURL('assets/shukkin-kun.png');
+const taikinButtonImageSrc = chrome.extension.getURL('assets/taikin-kun.png');
 
 class UpgradeKotUx {
   constructor() {
@@ -22,10 +20,14 @@ class UpgradeKotUx {
 
   private insertPagingButton($todayRow: JQuery<HTMLTableRowElement>): void {
     const warotaImage = `<img src="${pagingButtonImageSrc}">`;
+    const todayText = Utils.generateTodayText();
     const buttonHtml = `
       <div id="kantan-dakoku-shinsei">
         ${warotaImage}
-        <span>今日の<br />申請画面へ</span>
+        <span>
+          <span style="letter-spacing: 0.125em;">${todayText}</span>の<br />
+          申請画面へ
+        </span>
       </div>
     `;
     $('body').append(buttonHtml);
@@ -75,6 +77,7 @@ class UpgradeKotUx {
     $shukkinTime.val(Utils.generateCurrentTimeText());
     // NOTE(baba): フォーカスしないとModelがBindingされないため下記を実行
     $shukkinTime.focus();
+    $shukkinTime.blur();
     this.convertButtonToWarota(dakokuValue);
   }
 
@@ -85,7 +88,7 @@ class UpgradeKotUx {
   }
 
   private insertWarotaImageToButton(dakokuValue: DakokuValue): void {
-    const $button = $('#button_01');
+    const $button = $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom');
     const generateWarotaImage = (dakokuValue: DakokuValue) => {
       switch(dakokuValue) {
         case '1': return `<img src="${shukkinButtonImageSrc}">`;
@@ -97,7 +100,7 @@ class UpgradeKotUx {
   }
 
   private adjustButtonText(dakokuValue: DakokuValue): void {
-    const $button = $('#button_01');
+    const $button = $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom');
     const generateDakokuPrefix = (dakokuValue: DakokuValue) => {
       switch(dakokuValue) {
         case '1': return '出勤';

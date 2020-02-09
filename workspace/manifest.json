@@ -4,7 +4,7 @@
   "description": "Upgrade KOT UX.",
   "version": "1.0.0",
   "icons": {
-    "16": "assets/images/warota.gif"
+    "128": "assets/icon_kintai-kun.png"
   },
   "background": {
     "scripts": [
@@ -14,7 +14,7 @@
   },
   "browser_action": {
     "default_icon": {
-      "19": "assets/images/warota.gif"
+      "128": "assets/icon_kintai-kun.png"
     },
     "default_title": "upgrade-kot-ux"
   },
@@ -24,5 +24,10 @@
       "js": ["assets/scripts/upgradeKotUx__content.js"]
     }
   ],
-  "permissions": ["activeTab", "https://s2.kingtime.jp/*"]
+  "permissions": ["activeTab", "https://s2.kingtime.jp/*"],
+  "web_accessible_resources": [
+    "assets/kintai-kun.png",
+    "assets/shukkin-kun.png",
+    "assets/taikin-kun.png"
+  ]
 }
