@@ -1,8 +1,7 @@
 {
   "name": "upgrade-kot-ux",
   "version": "1.0.0",
-  "description": "Upgrade KOT UX.",
-  "main": "gulpfile.js",
+  "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
   "scripts": {
     "start": "npm run clean && npm run prepare && (npm run build:image & npm run build:json) && npm run build:js",
     "clean": "rm -rf dest",

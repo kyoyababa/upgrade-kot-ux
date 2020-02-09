@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "upgrade-kot-ux",
-  "description": "Upgrade KOT UX.",
+  "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
   "version": "1.0.0",
   "icons": {
     "128": "assets/icon_kintai-kun.png"
