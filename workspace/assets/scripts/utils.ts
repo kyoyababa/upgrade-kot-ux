@@ -13,7 +13,7 @@ export function getAdditionalStyles(): string {
         width: 240px;
         height: 240px;
         margin: 0;
-        padding: 0;
+        padding: 0 !important;
         border: 0;
         background-color: #005A96;
         color: #FFFFFF;

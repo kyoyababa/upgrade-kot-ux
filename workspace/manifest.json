@@ -24,7 +24,7 @@
       "js": ["assets/scripts/upgradeKotUx__content.js"]
     }
   ],
-  "permissions": ["activeTab", "https://s2.kingtime.jp/*"],
+  "permissions": ["https://s2.kingtime.jp/*"],
   "web_accessible_resources": [
     "assets/kintai-kun.png",
     "assets/shukkin-kun.png",
