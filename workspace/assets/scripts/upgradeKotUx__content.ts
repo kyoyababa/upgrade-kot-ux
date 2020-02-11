@@ -25,7 +25,7 @@ class UpgradeKotUx {
       <div id="kantan-dakoku-shinsei">
         ${warotaImage}
         <span>
-          <span style="letter-spacing: 0.125em;">${todayText}</span>の<br />
+          ${todayText}の<br />
           申請画面へ
         </span>
       </div>
@@ -108,8 +108,9 @@ class UpgradeKotUx {
         default: return '';
       }
     }
-    const buttonText = `${Utils.generateCurrentTimeText()}に<br />${generateDakokuPrefix(dakokuValue)}`;
-    $button.find('span').prepend(buttonText);
+    const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
+    const buttonText = `${time}<br />に${generateDakokuPrefix(dakokuValue)}`;
+    $button.find('span').html(buttonText);
   }
 
   private isAlreadyArrived(): boolean {

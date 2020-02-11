@@ -54,9 +54,26 @@ export function getAdditionalStyles(): string {
         background-color: #0A75BD;
       }
 
+      #kantan-dakoku-shinsei:hover > img,
+      .htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom:hover > img {
+        animation: spring 1500ms;
+        animation-timing-function: ease;
+        animation-iteration-count: infinite;
+      }
+
+
       /* NOTE(baba): CTAがふたつあるの意味不明で嫌なので非表示 */
       .htBlock-fixedToolbar, .htBlock-fixedToolbar_spacer {
         display: none !important;
+      }
+
+      @keyframes spring {
+        0% { transform: scale(1) translateY(0); }
+        10% { transform: scale(1.2, 0.6); }
+        30% { transform: scale(0.8, 1.1) translateY(-40px); }
+        50% { transform: scale(1.3, 0.8) translateY(20px); }
+        70% { transform: scale(1) translateY(0); }
+        100% { transform: translateY(0); }
       }
     </style>
   `;
@@ -79,7 +96,9 @@ export function generateTodayText(): string {
     ];
     const matchedDaysEnum = daysEnums.find(d => day === d.code);
     if (!matchedDaysEnum) return '';
-    return `<span style="margin-left: -0.5em;">（</span>${matchedDaysEnum.char}<span style="margin-right: -0.5em;">）</span>`;
+    return `（${matchedDaysEnum.char}）`;
   };
-  return `${currentDate.getMonth() + 1}/${currentDate.getDate()}${convertDayToChar(<Day>currentDate.getDay())}`
+  const date = `${currentDate.getMonth() + 1}<span style="margin: 0 0.125em;">/</span>${currentDate.getDate()}`;
+  const day = convertDayToChar(<Day>currentDate.getDay());
+  return `<span style="font-feature-settings: 'palt'">${date}${day}</span>`;
 }
