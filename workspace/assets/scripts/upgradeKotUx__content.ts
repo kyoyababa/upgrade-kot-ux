@@ -111,6 +111,8 @@ class UpgradeKotUx {
     const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
     const buttonText = `${time}<br />に${generateDakokuPrefix(dakokuValue)}`;
     $button.find('span').html(buttonText);
+
+    this.startWatchingChangeValues();
   }
 
   private isAlreadyArrived(): boolean {
@@ -157,6 +159,21 @@ class UpgradeKotUx {
 
     const $tableRows: JQuery<HTMLTableRowElement> = $('.htBlock-adjastableTableF_inner > table > tbody > tr');
     return $tableRows.eq(matchedRowIndex);
+  }
+
+  // NOTE(baba): ユーザーが任意の値で打刻申請をしたい場合を考慮し、
+  // 何らかの値の編集が行われたらボタンを汎用化する
+  private startWatchingChangeValues(): void {
+    const $types = $('select[name^="recording_type_code_"]');
+    const $times = $('input[name^="recording_timestamp_time_"]');
+    const $button = $('#button_01.htBlock-buttonL.htBlock-buttonSave');
+
+    const changeButtonText = () => {
+      $button.children('span').eq(0).text('打刻申請');
+    };
+
+    $types.change(() => changeButtonText());
+    $times.change(() => changeButtonText());
   }
 }
 
