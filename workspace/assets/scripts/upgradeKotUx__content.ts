@@ -3,9 +3,9 @@ import * as Utils from './utils';
 
 type DakokuValue = '1' | '2';
 
-const pagingButtonImageSrc = chrome.extension.getURL('assets/kintai-kun.png');
-const shukkinButtonImageSrc = chrome.extension.getURL('assets/shukkin-kun.png');
-const taikinButtonImageSrc = chrome.extension.getURL('assets/taikin-kun.png');
+const pagingButtonImageSrc = chrome.extension.getURL('assets/images/kintai-kun.png');
+const shukkinButtonImageSrc = chrome.extension.getURL('assets/images/shukkin-kun.png');
+const taikinButtonImageSrc = chrome.extension.getURL('assets/images/taikin-kun.png');
 
 class UpgradeKotUx {
   constructor() {
@@ -88,7 +88,7 @@ class UpgradeKotUx {
   }
 
   private insertWarotaImageToButton(dakokuValue: DakokuValue): void {
-    const $button = $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom');
+    const $button = Utils.getDakokuButton();
     const generateWarotaImage = (dakokuValue: DakokuValue) => {
       switch(dakokuValue) {
         case '1': return `<img src="${shukkinButtonImageSrc}">`;
@@ -100,12 +100,11 @@ class UpgradeKotUx {
   }
 
   private adjustButtonText(dakokuValue: DakokuValue): void {
-    const $button = $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom');
+    const $button = Utils.getDakokuButton();
     const generateDakokuPrefix = (dakokuValue: DakokuValue) => {
       switch(dakokuValue) {
         case '1': return '出勤';
         case '2': return '退勤';
-        default: return '';
       }
     }
     const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
@@ -143,18 +142,7 @@ class UpgradeKotUx {
       return $($r).find('p').text();
     });
 
-    const today = new Date();
-    const rowDates = rowInnerTexts.map(t => {
-      const month = parseInt(t.split('/')[0], 10);
-      const date = parseInt(t.split('/')[1].slice(0, 2), 10);
-      const currentYear = today.getFullYear();
-      return new Date(currentYear, month, date);
-    })
-    const matchedRowIndex = rowDates.findIndex(d => {
-      const isMonthMatched = d.getMonth() - 1 === today.getMonth();
-      const isDateMatched = d.getDate() === today.getDate();
-      return isMonthMatched && isDateMatched;
-    });
+    const matchedRowIndex = Utils.findMatchedRowIndex(rowInnerTexts);
     if (typeof matchedRowIndex === 'undefined' || matchedRowIndex === null) return;
 
     const $tableRows: JQuery<HTMLTableRowElement> = $('.htBlock-adjastableTableF_inner > table > tbody > tr');
@@ -166,7 +154,7 @@ class UpgradeKotUx {
   private startWatchingChangeValues(): void {
     const $types = $('select[name^="recording_type_code_"]');
     const $times = $('input[name^="recording_timestamp_time_"]');
-    const $button = $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom');
+    const $button = Utils.getDakokuButton();
 
     const changeButtonText = () => {
       $button.children('span').eq(0).text('打刻申請');

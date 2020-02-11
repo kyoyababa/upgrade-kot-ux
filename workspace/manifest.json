@@ -4,7 +4,7 @@
   "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
   "version": "1.0.0",
   "icons": {
-    "128": "assets/icon_kintai-kun.png"
+    "128": "assets/images/icon_kintai-kun.png"
   },
   "background": {
     "scripts": [
@@ -14,7 +14,7 @@
   },
   "browser_action": {
     "default_icon": {
-      "128": "assets/icon_kintai-kun.png"
+      "128": "assets/images/icon_kintai-kun.png"
     },
     "default_title": "upgrade-kot-ux"
   },
@@ -26,8 +26,8 @@
   ],
   "permissions": ["https://s2.kingtime.jp/*"],
   "web_accessible_resources": [
-    "assets/kintai-kun.png",
-    "assets/shukkin-kun.png",
-    "assets/taikin-kun.png"
+    "assets/images/kintai-kun.png",
+    "assets/images/shukkin-kun.png",
+    "assets/images/taikin-kun.png"
   ]
 }

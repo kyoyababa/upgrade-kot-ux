@@ -61,7 +61,6 @@ export function getAdditionalStyles(): string {
         animation-iteration-count: infinite;
       }
 
-
       /* NOTE(baba): CTAがふたつあるの意味不明で嫌なので非表示 */
       .htBlock-fixedToolbar, .htBlock-fixedToolbar_spacer {
         display: none !important;
@@ -101,4 +100,23 @@ export function generateTodayText(): string {
   const date = `${currentDate.getMonth() + 1}<span style="margin: 0 0.125em;">/</span>${currentDate.getDate()}`;
   const day = convertDayToChar(<Day>currentDate.getDay());
   return `<span style="font-feature-settings: 'palt'">${date}${day}</span>`;
+}
+
+export function findMatchedRowIndex(rowInnerTexts: Array<string>): number | null {
+  const today = new Date();
+  const rowDates = rowInnerTexts.map(t => {
+    const month = parseInt(t.split('/')[0], 10);
+    const date = parseInt(t.split('/')[1].slice(0, 2), 10);
+    const currentYear = today.getFullYear();
+    return new Date(currentYear, month, date);
+  })
+  return rowDates.findIndex(d => {
+    const isMonthMatched = d.getMonth() - 1 === today.getMonth();
+    const isDateMatched = d.getDate() === today.getDate();
+    return isMonthMatched && isDateMatched;
+  });
+}
+
+export function getDakokuButton(): JQuery<HTMLButtonElement> {
+  return $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom');
 }

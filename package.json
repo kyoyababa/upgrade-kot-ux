@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
   "scripts": {
-    "start": "npm run clean && npm run prepare && (npm run build:image & npm run build:json) && npm run build:js",
-    "clean": "rm -rf dest",
-    "build:js": "parcel watch workspace/assets/scripts/upgradeKotUx__background.js -d dest/assets/scripts/ --no-hmr & parcel watch workspace/assets/scripts/upgradeKotUx__content.ts -d dest/assets/scripts/ --no-hmr",
-    "build:image": "cp -r workspace/assets/images dest/assets",
-    "build:json": "cp workspace/manifest.json dest",
-    "prepare": "mkdir dest"
+    "start": "npm run clean && npm run prepare && (npm run build:image & npm run build:tson) && npm run watch:ts",
+    "clean": "rm -rf dest & rm -rf dest.zip & rm -rf .DS_Store & rm -rf workspace/**/.DS_Store",
+    "watch:ts": "parcel watch workspace/assets/scripts/*.ts -d dest/assets/scripts/ --no-hmr",
+    "build:image": "mkdir dest/assets && mkdir dest/assets/images && cp -r workspace/assets/images dest/assets",
+    "build:tson": "cp workspace/manifest.json dest",
+    "prepare": "mkdir dest",
+    "build:ts": "parcel build workspace/assets/scripts/*.ts -d dest/assets/scripts/ --no-source-maps",
+    "release-build": "npm run clean && npm run prepare && (npm run build:image & npm run build:tson) && npm run build:ts"
   },
   "author": "kyoyababa",
   "license": "MIT",
