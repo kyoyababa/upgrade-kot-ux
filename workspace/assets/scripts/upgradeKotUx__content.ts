@@ -166,7 +166,7 @@ class UpgradeKotUx {
   private startWatchingChangeValues(): void {
     const $types = $('select[name^="recording_type_code_"]');
     const $times = $('input[name^="recording_timestamp_time_"]');
-    const $button = $('#button_01.htBlock-buttonL.htBlock-buttonSave');
+    const $button = $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom');
 
     const changeButtonText = () => {
       $button.children('span').eq(0).text('打刻申請');
