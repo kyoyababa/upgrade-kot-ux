@@ -10,7 +10,7 @@
     "build:tson": "cp workspace/manifest.json dest",
     "prepare": "mkdir dest",
     "build:ts": "parcel build workspace/assets/scripts/*.ts -d dest/assets/scripts/ --no-source-maps",
-    "release-build": "npm run clean && npm run prepare && (npm run build:image & npm run build:tson) && npm run build:ts"
+    "release-build": "npm run clean && npm run prepare && (npm run build:image & npm run build:tson) && npm run build:ts && zip dest.zip dest/"
   },
   "author": "kyoyababa",
   "license": "MIT",
