@@ -116,7 +116,11 @@ class UpgradeKotUx {
 
   private isAlreadyArrived(): boolean {
     const $dakokuHistoryTable = $('.specific-table_1000_wrap');
-    return $dakokuHistoryTable.length === 1;
+    const $rows = $('#recording_timestamp_table tbody tr:not(#recording_timestamp_add_template)');
+    const isArrived = Array.from($rows).map($r => {
+      return $($r).find('select.htBlock-selectmenu').val() === '1';
+    }).includes(true);
+    return $dakokuHistoryTable.length === 1 || isArrived;
   }
 
   private moveToDakokuShinseiPage($todayRow: JQuery<HTMLTableRowElement>): void {
