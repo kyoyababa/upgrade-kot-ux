@@ -2,7 +2,8 @@
   "manifest_version": 2,
   "name": "upgrade-kot-ux",
   "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
-  "version": "2.0.2",
+  "version": "2.0.4",
+  "default_locale": "ja",
   "icons": {
     "128": "assets/images/icon_kintai-kun.png"
   },
@@ -16,7 +17,8 @@
     "default_icon": {
       "128": "assets/images/icon_kintai-kun.png"
     },
-    "default_title": "upgrade-kot-ux"
+    "default_title": "upgrade-kot-ux",
+    "default_popup": "popup/popup.html"
   },
   "content_scripts": [
     {
@@ -24,7 +26,7 @@
       "js": ["assets/scripts/upgradeKotUx__content.js"]
     }
   ],
-  "permissions": ["https://s2.kingtime.jp/*"],
+  "permissions": ["https://s2.kingtime.jp/*", "storage"],
   "web_accessible_resources": [
     "assets/images/kintai-kun.png",
     "assets/images/shukkin-kun.png",

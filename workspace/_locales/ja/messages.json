@@ -1,0 +1,46 @@
+{
+    "mainBtn": {
+        "message": "申請画面へ",
+        "description": "Main button"
+    },
+    "dakokuBtn1": {
+        "message": "に出勤",
+        "description": "出勤申請ボタン"
+    },
+    "dakokuBtn2": {
+        "message": "に退勤",
+        "description": "退勤申請ボタン"
+    },
+    "dakokuBtnGen": {
+        "message": "打刻申請",
+        "description": "打刻申請ボタン"
+    },
+    "day0": {
+        "message": "日",
+        "description": "日曜日"
+    },
+    "day1": {
+        "message": "月",
+        "description": "月曜日"
+    },
+    "day2": {
+        "message": "火",
+        "description": "火曜日"
+    },
+    "day3": {
+        "message": "水",
+        "description": "水曜日"
+    },
+    "day4": {
+        "message": "木",
+        "description": "木曜日"
+    },
+    "day5": {
+        "message": "金",
+        "description": "金曜日"
+    },
+    "day6": {
+        "message": "土",
+        "description": "土曜日"
+    }
+}
