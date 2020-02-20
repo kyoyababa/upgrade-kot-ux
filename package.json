@@ -8,7 +8,7 @@
     "watch:ts": "parcel watch workspace/assets/scripts/*.ts -d dest/assets/scripts/ --no-hmr",
     "build:image": "mkdir dest/assets && mkdir dest/assets/images && cp -r workspace/assets/images dest/assets",
     "build:tson": "cp workspace/manifest.json dest",
-    "build:i18n": "cp -r workspace/_locales dest/_locales & mkdir dest/popup ; cp workspace/popup/popup.html dest/popup/ & parcel build workspace/popup/popup.js -d dest/popup/",
+    "build:i18n": "cp -r workspace/_locales dest/_locales & mkdir dest/popup ; cp workspace/popup/popup.html dest/popup/ & parcel build workspace/popup/popup.ts -d dest/popup/ --no-source-maps",
     "prepare": "mkdir dest",
     "build:ts": "parcel build workspace/assets/scripts/*.ts -d dest/assets/scripts/ --no-source-maps",
     "release-build": "npm run clean && npm run prepare && (npm run build:image & npm run build:i18n & npm run build:tson) && npm run build:ts && zip dest.zip dest/"
