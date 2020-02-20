@@ -63,8 +63,8 @@ class UpgradeKotUx {
     i18n.getMessage('mainBtn', msg => {
       $('#kantan-dakoku-shinsei-text').text(msg);
     });
-    i18n.getMessage('day' + new Date().getDay(), msg => {
-       $('#kantan-dakoku-shinsei-day').text('(' + msg + ')');
+    i18n.getMessage(`day${new Date().getDay()}`, msg => {
+      $('#kantan-dakoku-shinsei-day').text(`(${msg})`);
     });
   }
 
@@ -133,7 +133,7 @@ class UpgradeKotUx {
 
   private adjustButtonText(dakokuValue: DakokuValue): void {
     const $button = Utils.getDakokuButton();
-    i18n.getMessage('dakokuBtn' + dakokuValue, msg => {
+    i18n.getMessage(`dakokuBtn${dakokuValue}`, msg => {
       const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
       const buttonText = `${time}<br />${msg}`;
       $button.find('span').html(buttonText);
