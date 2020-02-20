@@ -21,19 +21,16 @@ class UpgradeKotUx {
     chrome.storage.onChanged.addListener(_ => {
       if (this.isKotTopPage()) {
         this.adjustMainBtnText();
-
         return;
       }
 
       if (this.isDakokuShinseiPage() && this.isAlreadyArrived()) {
         this.adjustButtonText('2');
-
         return;
       }
 
       if (this.isDakokuShinseiPage()) {
         this.adjustButtonText('1');
-
         return;
       }
     });
@@ -60,10 +57,10 @@ class UpgradeKotUx {
   }
 
   private adjustMainBtnText() {
-    i18n.getMessage('mainBtn', msg => {
+    i18n.getMessage('mainBtn', (msg: string) => {
       $('#kantan-dakoku-shinsei-text').text(msg);
     });
-    i18n.getMessage(`day${new Date().getDay()}`, msg => {
+    i18n.getMessage(`day${new Date().getDay()}`, (msg: string) => {
       $('#kantan-dakoku-shinsei-day').text(`(${msg})`);
     });
   }
@@ -133,7 +130,7 @@ class UpgradeKotUx {
 
   private adjustButtonText(dakokuValue: DakokuValue): void {
     const $button = Utils.getDakokuButton();
-    i18n.getMessage(`dakokuBtn${dakokuValue}`, msg => {
+    i18n.getMessage(`dakokuBtn${dakokuValue}`, (msg: string) => {
       const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
       const buttonText = `${time}<br />${msg}`;
       $button.find('span').html(buttonText);
@@ -189,7 +186,7 @@ class UpgradeKotUx {
     const $button = Utils.getDakokuButton();
 
     const changeButtonText = () => {
-      i18n.getMessage('dakokuBtnGen', msg => {
+      i18n.getMessage('dakokuBtnGen', (msg: string) => {
         $button.children('span').eq(0).text(msg);
       });
     };
