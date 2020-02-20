@@ -7,24 +7,29 @@ export enum Locale {
 }
 
 function messages(locale: Locale, key: string): string {
-  let i18n;
-
-  switch (locale) {
-    case "en": i18n = langEn; break;
-    default: i18n = langJa;
+  const findI18nCode = (locale: Locale): string => {
+    switch (locale) {
+      case 'en': return langEn;
+      default: return langJa;
+    }
   }
 
-  return i18n[key].message;
+  const i18nObject = findI18nCode(locale)[key];
+  if (!i18nObject) return '';
+
+  return i18nObject.message;
 }
 
 export function getMessage(key: string, callBack: Function): void {
-  let message = chrome.i18n.getMessage(key);
   chrome.storage.sync.get(['lang'], lang => {
     const langVal = lang.lang;
-    if (langVal != undefined) {
-      message = messages(langVal, key);
+
+    if (!langVal) {
+      callBack(chrome.i18n.getMessage(key));
+
+      return;
     }
 
-      callBack(message);
+    callBack(messages(langVal, key));
   });
 }
