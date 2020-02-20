@@ -1,7 +1,7 @@
 {
     "mainBtn": {
         "message": "申請画面へ",
-        "description": "Main button"
+        "description": "申請ページ遷移用のボタン"
     },
     "dakokuBtn1": {
         "message": "に出勤",

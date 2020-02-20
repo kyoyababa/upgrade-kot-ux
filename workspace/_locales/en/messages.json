@@ -1,7 +1,7 @@
 {
     "mainBtn": {
         "message": "Clock In/Out Page",
-        "description": "Main button"
+        "description": "Button linking to Clock In/Out Page"
     },
     "dakokuBtn1": {
         "message": "Clock In",
