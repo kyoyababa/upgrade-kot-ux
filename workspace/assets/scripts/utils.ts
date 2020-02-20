@@ -88,7 +88,7 @@ export function generateCurrentTimeText(): string {
 export function generateTodayText(): string {
   const currentDate = new Date();
   const date = `${currentDate.getMonth() + 1}<span style="margin: 0 0.125em;">/</span>${currentDate.getDate()}`;
-  return `<span style="font-feature-settings: 'palt'">${date}</span>`;
+  return date;
 }
 
 export function findMatchedRowIndex(rowInnerTexts: Array<string>): number | null {

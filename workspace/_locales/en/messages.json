@@ -16,31 +16,31 @@
         "description": "General Clock In/Out Button"
     },
     "day0": {
-        "message": "Sun",
+        "message": "(Sun)",
         "description": "Sunday"
     },
     "day1": {
-        "message": "Mon",
+        "message": "(Mon)",
         "description": "Monday"
     },
     "day2": {
-        "message": "Tue",
+        "message": "(Tue)",
         "description": "Tuesday"
     },
     "day3": {
-        "message": "Wed",
+        "message": "(Wed)",
         "description": "Wednesday"
     },
     "day4": {
-        "message": "Thu",
+        "message": "(Thu)",
         "description": "Thursday"
     },
     "day5": {
-        "message": "Fri",
+        "message": "(Fri)",
         "description": "Friday"
     },
     "day6": {
-        "message": "Sat",
+        "message": "(Sat)",
         "description": "Saturday"
     }
 

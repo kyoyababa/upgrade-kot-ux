@@ -42,8 +42,8 @@ class UpgradeKotUx {
     const buttonHtml = `
       <div id="kantan-dakoku-shinsei">
         ${warotaImage}
-        <span>
-          <span>${todayText}</span><span id ="kantan-dakoku-shinsei-day"></span><br />
+        <span style="font-feature-settings: 'palt'">
+          ${todayText}<span id="kantan-dakoku-shinsei-day"></span><br />
           <span id="kantan-dakoku-shinsei-text"></span>
         </span>
       </div>
@@ -61,7 +61,7 @@ class UpgradeKotUx {
       $('#kantan-dakoku-shinsei-text').text(msg);
     });
     i18n.getMessage(`day${new Date().getDay()}`, (msg: string) => {
-      $('#kantan-dakoku-shinsei-day').text(`(${msg})`);
+      $('#kantan-dakoku-shinsei-day').text(`${msg}`);
     });
   }
 
