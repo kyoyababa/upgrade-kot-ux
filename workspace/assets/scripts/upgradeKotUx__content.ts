@@ -19,23 +19,23 @@ class UpgradeKotUx {
     }
 
     chrome.storage.onChanged.addListener(_ => {
-        if (this.isKotTopPage()) {
-            this.adjustMainBtnText();
+      if (this.isKotTopPage()) {
+        this.adjustMainBtnText();
 
-            return;
-        }
+        return;
+      }
 
-        if (this.isDakokuShinseiPage() && this.isAlreadyArrived()) {
-            this.adjustButtonText('2');
+      if (this.isDakokuShinseiPage() && this.isAlreadyArrived()) {
+        this.adjustButtonText('2');
 
-            return;
-        }
+        return;
+      }
 
-        if (this.isDakokuShinseiPage()) {
-            this.adjustButtonText('1');
+      if (this.isDakokuShinseiPage()) {
+        this.adjustButtonText('1');
 
-            return;
-        }
+        return;
+      }
     });
   }
 
