@@ -6,6 +6,7 @@ chrome.storage.sync.get(['lang'], result => {
 });
 
 $('input[name="lang"]').change(() => {
-  chrome.storage.sync.set({ "lang": $('input[name="lang"]:checked').val() });
+  const newLangVal = $('input[name="lang"]:checked').val();
+  chrome.storage.sync.set({ lang: newLangVal });
   window.close();
 });
