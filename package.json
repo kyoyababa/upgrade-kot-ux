@@ -3,14 +3,15 @@
   "version": "2.0.3",
   "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
   "scripts": {
-    "start": "npm run clean && npm run prepare && (npm run build:image & npm run build:tson) && npm run watch:ts",
+    "start": "npm run clean && npm run prepare && (npm run build:image & npm run build:i18n & npm run build:tson) && npm run watch:ts",
     "clean": "rm -rf dest & rm -rf dest.zip & rm -rf .DS_Store & rm -rf workspace/**/.DS_Store",
     "watch:ts": "parcel watch workspace/assets/scripts/*.ts -d dest/assets/scripts/ --no-hmr",
     "build:image": "mkdir dest/assets && mkdir dest/assets/images && cp -r workspace/assets/images dest/assets",
     "build:tson": "cp workspace/manifest.json dest",
+    "build:i18n": "cp -r workspace/_locales dest/_locales & mkdir dest/popup ; cp workspace/popup/popup.html dest/popup/ & parcel build workspace/popup/popup.ts -d dest/popup/ --no-source-maps",
     "prepare": "mkdir dest",
     "build:ts": "parcel build workspace/assets/scripts/*.ts -d dest/assets/scripts/ --no-source-maps",
-    "release-build": "npm run clean && npm run prepare && (npm run build:image & npm run build:tson) && npm run build:ts && zip -r dest.zip dest/"
+    "release-build": "npm run clean && npm run prepare && (npm run build:image & npm run build:i18n & npm run build:tson) && npm run build:ts && zip -r dest.zip dest/"
   },
   "author": "kyoyababa",
   "license": "MIT",
@@ -23,7 +24,7 @@
     "@types/chrome": "0.0.93",
     "@types/jquery": "^3.3.32",
     "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "jquery": "^3.2.1",
     "parcel-bundler": "^1.12.4",
     "typescript": "^3.7.5"

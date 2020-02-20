@@ -85,23 +85,10 @@ export function generateCurrentTimeText(): string {
   return `00${currentTime.getHours()}`.slice(-2) + ':' + `00${currentTime.getMinutes()}`.slice(-2);
 }
 
-type Day = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-type DayChar = '日' | '月' | '火' | '水' | '木' | '金' | '土' | '日';
-
 export function generateTodayText(): string {
   const currentDate = new Date();
-  const convertDayToChar = (day: Day): string => {
-    const daysEnums: Array<{ code: Day, char: DayChar }> = [
-      { code: 0, char: '日' }, { code: 1, char: '月' }, { code: 2, char: '火' }, { code: 3, char: '水' },
-      { code: 4, char: '木' }, { code: 5, char: '金' }, { code: 6, char: '土' }
-    ];
-    const matchedDaysEnum = daysEnums.find(d => day === d.code);
-    if (!matchedDaysEnum) return '';
-    return `（${matchedDaysEnum.char}）`;
-  };
   const date = `${currentDate.getMonth() + 1}<span style="margin: 0 0.125em;">/</span>${currentDate.getDate()}`;
-  const day = convertDayToChar(<Day>currentDate.getDay());
-  return `<span style="font-feature-settings: 'palt'">${date}${day}</span>`;
+  return `<span style="font-feature-settings: 'palt'">${date}</span>`;
 }
 
 export function findMatchedRowIndex(rowInnerTexts: Array<string>): number | null {

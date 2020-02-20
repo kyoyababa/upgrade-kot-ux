@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import * as Utils from './utils';
+import * as i18n from './i18n';
 
 type DakokuValue = '1' | '2';
 
@@ -16,6 +17,26 @@ class UpgradeKotUx {
     if (this.isKotTopPage() || this.isDakokuShinseiPage()) {
       this.activateKantanButton();
     }
+
+    chrome.storage.onChanged.addListener(_ => {
+      if (this.isKotTopPage()) {
+        this.adjustMainBtnText();
+
+        return;
+      }
+
+      if (this.isDakokuShinseiPage() && this.isAlreadyArrived()) {
+        this.adjustButtonText('2');
+
+        return;
+      }
+
+      if (this.isDakokuShinseiPage()) {
+        this.adjustButtonText('1');
+
+        return;
+      }
+    });
   }
 
   private insertPagingButton($todayRow: JQuery<HTMLTableRowElement>): void {
@@ -25,14 +46,25 @@ class UpgradeKotUx {
       <div id="kantan-dakoku-shinsei">
         ${warotaImage}
         <span>
-          ${todayText}の<br />
-          申請画面へ
+          <span>${todayText}</span><span id ="kantan-dakoku-shinsei-day"></span><br />
+          <span id="kantan-dakoku-shinsei-text"></span>
         </span>
       </div>
     `;
     $('body').append(buttonHtml);
     $('#kantan-dakoku-shinsei').click(() => {
       this.moveToDakokuShinseiPage($todayRow);
+    });
+
+    this.adjustMainBtnText();
+  }
+
+  private adjustMainBtnText() {
+    i18n.getMessage('mainBtn', msg => {
+      $('#kantan-dakoku-shinsei-text').text(msg);
+    });
+    i18n.getMessage(`day${new Date().getDay()}`, msg => {
+      $('#kantan-dakoku-shinsei-day').text(`(${msg})`);
     });
   }
 
@@ -101,17 +133,13 @@ class UpgradeKotUx {
 
   private adjustButtonText(dakokuValue: DakokuValue): void {
     const $button = Utils.getDakokuButton();
-    const generateDakokuPrefix = (dakokuValue: DakokuValue) => {
-      switch(dakokuValue) {
-        case '1': return '出勤';
-        case '2': return '退勤';
-      }
-    }
-    const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
-    const buttonText = `${time}<br />に${generateDakokuPrefix(dakokuValue)}`;
-    $button.find('span').html(buttonText);
+    i18n.getMessage(`dakokuBtn${dakokuValue}`, msg => {
+      const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
+      const buttonText = `${time}<br />${msg}`;
+      $button.find('span').html(buttonText);
 
-    this.startWatchingChangeValues();
+      this.startWatchingChangeValues();
+    });
   }
 
   private isAlreadyArrived(): boolean {
@@ -161,7 +189,9 @@ class UpgradeKotUx {
     const $button = Utils.getDakokuButton();
 
     const changeButtonText = () => {
-      $button.children('span').eq(0).text('打刻申請');
+      i18n.getMessage('dakokuBtnGen', msg => {
+        $button.children('span').eq(0).text(msg);
+      });
     };
 
     $types.change(() => changeButtonText());

@@ -1,0 +1,47 @@
+{
+    "mainBtn": {
+        "message": "Clock In/Out Page",
+        "description": "Button linking to Clock In/Out Page"
+    },
+    "dakokuBtn1": {
+        "message": "Clock In",
+        "description": "Clock In Button"
+    },
+    "dakokuBtn2": {
+        "message": "Clock Out",
+        "description": "Clock Out Button"
+    },
+    "dakokuBtnGen": {
+        "message": "Submit",
+        "description": "General Clock In/Out Button"
+    },
+    "day0": {
+        "message": "Sun",
+        "description": "Sunday"
+    },
+    "day1": {
+        "message": "Mon",
+        "description": "Monday"
+    },
+    "day2": {
+        "message": "Tue",
+        "description": "Tuesday"
+    },
+    "day3": {
+        "message": "Wed",
+        "description": "Wednesday"
+    },
+    "day4": {
+        "message": "Thu",
+        "description": "Thursday"
+    },
+    "day5": {
+        "message": "Fri",
+        "description": "Friday"
+    },
+    "day6": {
+        "message": "Sat",
+        "description": "Saturday"
+    }
+
+}
