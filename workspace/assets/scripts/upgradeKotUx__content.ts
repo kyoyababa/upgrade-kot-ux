@@ -45,12 +45,19 @@ class UpgradeKotUx {
         <span style="font-feature-settings: 'palt'">
           ${todayText}<span id="kantan-dakoku-shinsei-day"></span><br />
           <span id="kantan-dakoku-shinsei-text"></span>
+          <small class="dakoku-key-assist"><code>Shift</code> + <code>Enter</code></small>
         </span>
       </div>
     `;
     $('body').append(buttonHtml);
     $('#kantan-dakoku-shinsei').click(() => {
       this.moveToDakokuShinseiPage($todayRow);
+    });
+    $(document).keypress((e) => {
+    	if (e.shiftKey && e.charCode === 13) {
+        $('#kantan-dakoku-shinsei').addClass('hover');
+        $('#kantan-dakoku-shinsei').click();
+      }
     });
 
     this.adjustMainBtnText();
@@ -133,9 +140,17 @@ class UpgradeKotUx {
     i18n.getMessage(`dakokuBtn${dakokuValue}`, (msg: string) => {
       const time = `<span style="letter-spacing: 0.05em;">${Utils.generateCurrentTimeText()}</span>`;
       const buttonText = `${time}<br />${msg}`;
-      $button.find('span').html(buttonText);
+      const dakokuKeyAssist = '<small class="dakoku-key-assist"><code>Shift</code> + <code>Enter</code></small>';
+      $button.find('span').html(buttonText + dakokuKeyAssist);
 
       this.startWatchingChangeValues();
+
+      $(document).keypress((e) => {
+      	if (e.shiftKey && e.charCode === 13) {
+          $('.htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom').addClass('hover');
+          $('htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom').click();
+        }
+      });
     });
   }
 

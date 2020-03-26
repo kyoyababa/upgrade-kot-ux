@@ -52,15 +52,32 @@ export function getAdditionalStyles(): string {
       }
 
       #kantan-dakoku-shinsei:hover,
-      .htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom:hover {
+      #kantan-dakoku-shinsei.hover,
+      .htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom:hover,
+        .htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom.hover {
         background-color: #0A75BD;
       }
 
       #kantan-dakoku-shinsei:hover > img,
-      .htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom:hover > img {
+      #kantan-dakoku-shinsei.hover > img,
+      .htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom:hover > img,
+      .htBlock-buttonL.htBlock-buttonSave.specific-saveButtonBottom.hover > img {
         animation: spring 1500ms;
         animation-timing-function: ease;
         animation-iteration-count: infinite;
+      }
+
+      small.dakoku-key-assist {
+        display: block;
+        margin-top: 4px;
+        font-size: 14px;
+      }
+
+      small.dakoku-key-assist > code {
+        display: inline-block;
+        padding: 0px 4px;
+        border: 1px solid rgba(255,255,255,0.75);
+        border-radius: 4px;
       }
 
       /* NOTE(baba): CTAがふたつあるの意味不明で嫌なので非表示 */
