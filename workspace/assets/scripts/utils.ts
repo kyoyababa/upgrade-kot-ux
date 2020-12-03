@@ -114,10 +114,10 @@ export function findMatchedRowIndex(rowInnerTexts: Array<string>): number | null
     const month = parseInt(t.split('/')[0], 10);
     const date = parseInt(t.split('/')[1].slice(0, 2), 10);
     const currentYear = today.getFullYear();
-    return new Date(currentYear, month, date);
+    return new Date(currentYear, month - 1, date);
   })
   return rowDates.findIndex(d => {
-    const isMonthMatched = d.getMonth() - 1 === today.getMonth();
+    const isMonthMatched = d.getMonth() === today.getMonth();
     const isDateMatched = d.getDate() === today.getDate();
     return isMonthMatched && isDateMatched;
   });
