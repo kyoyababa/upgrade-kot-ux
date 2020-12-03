@@ -1,6 +1,6 @@
 {
   "name": "upgrade-kot-ux",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
   "scripts": {
     "start": "npm run clean && npm run prepare && (npm run build:image & npm run build:i18n & npm run build:tson) && npm run watch:ts",
