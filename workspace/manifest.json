@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "upgrade-kot-ux",
   "description": "Upgrade KOT userability experience; 1-click page-moving, 1-click 'dakoku' request.",
   "version": "2.0.6",
