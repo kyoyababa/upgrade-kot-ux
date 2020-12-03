@@ -14,9 +14,7 @@ class UpgradeKotUx {
   }
 
   private init(): void {
-    if (this.isKotTopPage() || this.isDakokuShinseiPage()) {
-      this.activateKantanButton();
-    }
+    this.activateKantanButton();
 
     chrome.storage.onChanged.addListener(_ => {
       if (this.isKotTopPage()) {
@@ -91,6 +89,22 @@ class UpgradeKotUx {
       this.insertShukkinDakokuData();
       return;
     }
+
+    if (this.isLoginPage()){
+      const $targetLoginButton = $('#login_button');
+      this.insertGeneralButton(
+          $targetLoginButton.val()?.toString() ?? "ログイン",
+          () => $targetLoginButton.trigger('click'))
+      return;
+    }
+
+    if (this.isDialogPage()){
+      const $targetDialogYesButton = $('.htBlock-dialog_yes');
+      this.insertGeneralButton(
+          $targetDialogYesButton.text(),
+          () => $targetDialogYesButton.trigger('click'))
+      return;
+    }
   }
 
   private insertShukkinDakokuData(): void {
@@ -154,6 +168,19 @@ class UpgradeKotUx {
     });
   }
 
+  private insertGeneralButton(buttonText: string, callback: () => void): void {
+    this.addButtonStyle();
+    const buttonHtml = `
+      <div id="kantan-dakoku-shinsei">
+        ${buttonText}
+      </div>
+    `;
+    $('body').append(buttonHtml);
+    $('#kantan-dakoku-shinsei').click(() => {
+      callback();
+    });
+  }
+
   private isAlreadyArrived(): boolean {
     const $dakokuHistoryTable = $('.specific-table_1000_wrap');
     const $rows = $('#recording_timestamp_table tbody tr:not(#recording_timestamp_add_template)');
@@ -178,6 +205,16 @@ class UpgradeKotUx {
   private isDakokuShinseiPage(): boolean {
     const $targetTableWrapper = $('#recording_timestamp_table');
     return $targetTableWrapper.length === 1;
+  }
+
+  private isLoginPage(): boolean {
+    const $targetLoginForm = $('.specific-loginForm');
+    return $targetLoginForm.length === 1;
+  }
+
+  private isDialogPage(): boolean {
+    const $targetDialog = $('.htBlock-dialog');
+    return $targetDialog.length === 1;
   }
 
   private findTodayRow(): JQuery<HTMLTableRowElement> | undefined {
