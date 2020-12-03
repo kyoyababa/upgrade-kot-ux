@@ -27,7 +27,7 @@ export function getAdditionalStyles(): string {
         box-shadow: 0 3px 6px #666666;
         text-align: center;
         cursor: pointer;
-        z-index: 9999;
+        z-index: 10001;
         transition: background-color 300ms cubic-bezier(0.19,1,0.22,1);
       }
 
